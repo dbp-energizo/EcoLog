@@ -32,9 +32,9 @@ public class Calculator {
 	public void sumPoint(int p) {
 		totalPoint = totalPoint + p;
 	}
-	
-	public List<Item> getItemList(List<Item> l) {
-		List<Item> li = l;
-		return li;
+
+	@Override
+	public String toString() {
+		return "Calculator [id=" + id + ", totalPoint=" + totalPoint + "]";
 	}
 }

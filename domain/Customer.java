@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 사용자 관리를 위해 필요한 도메인 클래스. USERINFO 테이블과 대응됨
  */
-public class User {
+public class Customer {
 	private String id;
 	private String password;
 	private String name;
@@ -13,14 +13,14 @@ public class User {
 	private String email;
 	private int address;
 	private String birth;
-	private String nickname; 
+	private String nickname;  //여기까지가 폼에서 입력받는 정보.
 	private int point; //자동
 	private List<Meeting> meeting;
 	private int regDate; //자동
 	private Character ch = new Character(id, nickname);
 	private List<String> imageList;
 	
-	public User(java.lang.String id, java.lang.String password, java.lang.String name, java.lang.String phone,
+	public Customer(java.lang.String id, java.lang.String password, java.lang.String name, java.lang.String phone,
 			java.lang.String email, int address, java.lang.String birth, java.lang.String nickname, int point,
 			List<Meeting> meeting, int regDate) {
 		super();

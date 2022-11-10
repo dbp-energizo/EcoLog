@@ -46,13 +46,13 @@ public class Character {
 		return "Character [id=" + id + ", grade=" + grade + "]";
 	}
 	
-	public void growCharacter(User user) {
+	public void growCharacter(Customer user) {
 		int point = user.getPoint();
-		//만약 포인트가 넘어섰으면 업그레이드 해주기
+		//만약 포인트가 해당 grade 범위 이상이면 업그레이드 해주기
 		//imageView() 호출
 	}
 	
-	public int imageView(User user, List<String> img, int grade) {
-		return 1;
+	public void imageView(Customer user, List<String> img, int grade) {
+		//image를 해당 단계로 설정. imageList[grade - 1]로 view할 수 있게하고 뭔가를 호출해서 갱신되게.
 	}
 }
