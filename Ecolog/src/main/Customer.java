@@ -1,0 +1,184 @@
+package model;
+
+import java.util.List;
+/**
+ * 사용자 관리를 위해 필요한 도메인 클래스. USERINFO 테이블과 대응됨
+ */
+public class Customer {
+	private String customerId;
+	private String password;
+	private String name;
+	private String phone;
+	private String email;
+	private String address;
+	private String birth;
+	private String nickname;  //��������� ������ �Է¹޴� ����.
+	private int point; //�ڵ�
+	private List<Meeting> meeting;
+	private int regDate; //�ڵ�
+	//private Character ch = new Character(id, nickname);
+	private List<String> imageList;
+	
+	public Customer(java.lang.String customerIdd, java.lang.String password, java.lang.String name, java.lang.String phone,
+			java.lang.String email, java.lang.String address, java.lang.String birth, java.lang.String nickname, int point,
+			List<Meeting> meeting, int regDate) {
+		super();
+		this.customerId = customerId;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.address = address;
+		this.birth = birth;
+		this.nickname = nickname;
+		this.point = point;
+		this.meeting = meeting;
+		this.regDate = regDate;
+	}
+
+	public Customer(String customerId, String password, String name, String phone, String email, String address,
+			String birth, String nickname) {
+		super();
+		this.customerId = customerId;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.address = address;
+		this.birth = birth;
+		this.nickname = nickname;
+	}
+	
+	/*public void update(User updateUser) {
+        this.password = updateUser.password;
+        this.name = updateUser.name;
+        this.email = updateUser.email;
+        this.phone = updateUser.phone;
+    }*/
+	
+
+	
+	/* ��й�ȣ �˻� */
+	public boolean matchPassword(String password) {
+		if (password == null) {
+			return false;
+		}
+		return this.password.equals(password);
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getBirth() {
+		return birth;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public List<Meeting> getMeeting() {
+		return meeting;
+	}
+
+	public void setMeeting(List<Meeting> meeting) {
+		this.meeting = meeting;
+	}
+
+	public int getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(int regDate) {
+		this.regDate = regDate;
+	}
+
+//	public Character getCh() {
+//		return ch;
+//	}
+//
+//	public void setCh(Character ch) {
+//		this.ch = ch;
+//	}
+
+	public List<String> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
+	}
+
+	public boolean isSameUser(String userid) {
+        return this.customerId.equals(userid);
+    }
+
+	@java.lang.Override
+	public String toString() {
+		return "user [customerId=" + customerId + ", password=" + password + ", name=" + name + ", phone=" + phone + ", email=" + email
+				+ ", address=" + address + ", birth=" + birth + ", nickname=" + nickname + ", point=" + point
+				+ ", regDate=" + regDate + "]";
+	}
+	
+}
