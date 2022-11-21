@@ -50,36 +50,36 @@ public class UserDao2{
 		
 		String updateQuery = "UPDATE STUDENT SET ";
 		int index = 0;
-		Object[] tempParam = new Object[10];		// update 문에 사용할 매개변수를 저장할 수 있는 임시 배열
+		Object[] params = new Object[10];		// update 문에 사용할 매개변수를 저장할 수 있는 임시 배열
 		
 		if (cus.getPassword() != null) {		// 이름이 설정되어 있을 경우
 			updateQuery += "password = ?, ";		// update 문에 이름 수정 부분 추가
-			tempParam[index++] = cus.getPassword();		// 매개변수에 수정할 이름 추가
+			params[index++] = cus.getPassword();		// 매개변수에 수정할 이름 추가
 		}
 		if (cus.getPhone() != null) {		// 패스워드가 설정되어 있을 경우
 			updateQuery += "phone = ?, ";		// update 문에 패스워드 수정 부분 추가
-			tempParam[index++] = cus.getPhone();		// 매개변수에 수정할 패스워드 추가
+			params[index++] = cus.getPhone();		// 매개변수에 수정할 패스워드 추가
 		}
 		if (cus.getEmail() != null) {		// 휴대폰 번호가 설정되어 있을 경우
 			updateQuery += "email = ?, ";		// update 문에 휴대폰 수정 부분 추가
-			tempParam[index++] = cus.getEmail();		// 매개변수에 수정할 휴대폰 추가
+			params[index++] = cus.getEmail();		// 매개변수에 수정할 휴대폰 추가
 		}
 		if (cus.getAddress() != null) {		// 학년이 설정되어 있을 경우
 			updateQuery += "address = ?, ";		// update 문에 학년 수정 부분 추가
-			tempParam[index++] = cus.getAddress();		// 매개변수에 수정할 학년 추가
+			params[index++] = cus.getAddress();		// 매개변수에 수정할 학년 추가
 		}
 		if (cus.getBirth() != null) {		// 교수코드가 설정되어 있을 경우
 			updateQuery += "birth = ?, ";		// update 문에 지도교수 수정 부분 추가
-			tempParam[index++] = cus.getBirth();		// 매개변수에 수정할 지도교수코드 추가
+			params[index++] = cus.getBirth();		// 매개변수에 수정할 지도교수코드 추가
 		}
 		updateQuery += "WHERE customerId = ? ";		// update 문에 조건 지정
 		updateQuery = updateQuery.replace(", WHERE", " WHERE");		// update 문의 where 절 앞에 있을 수 있는 , 제거
 		
-		tempParam[index++] = cus.getCusId();		// 찾을 조건에 해당하는 학번에 대한 매개변수 추가
+		params[index++] = cus.getCusId();		// 찾을 조건에 해당하는 학번에 대한 매개변수 추가
 		
 		Object[] newParam = new Object[index];
 		for (int i=0; i < newParam.length; i++)		// 매개변수의 개수만큼의 크기를 갖는 배열을 생성하고 매개변수 값 복사
-			newParam[i] = tempParam[i];
+			newParam[i] = params[i];
 		
 		jdbcUtil.setSqlAndParameters(updateQuery, newParam);
 		
@@ -134,7 +134,7 @@ public class UserDao2{
 			if (rs.next()) {						// 학생 정보 발견
 				dto = new CustomerDTO();	
 				dto.setCusId(customerId);
-				dto.setPassword("password");
+				dto.setPassword(rs.getString("password"));
 				dto.setName(rs.getString("name"));
 				dto.setPhone(rs.getString("phone"));
 				dto.setEmail(rs.getString("email"));
@@ -156,7 +156,7 @@ public class UserDao2{
 	 */
 	public List<CustomerDTO> findUserList() throws SQLException {
         String sql = "SELECT customerId, name, phone,email, birth,nickname " 
-        		   + "FROM Customer"
+        		   + "FROM Customer "
         		   + "ORDER BY customerId";
 		jdbcUtil.setSqlAndParameters(sql, null);		// JDBCUtil에 query문 설정
 					
@@ -166,7 +166,7 @@ public class UserDao2{
 			while (rs.next()) {
 				CustomerDTO dto = new CustomerDTO();		
 					dto.setCusId(rs.getString("customerId"));
-					dto.setPassword("null");
+					dto.setPassword(null);
 					dto.setName(rs.getString("name"));
 					dto.setPhone(rs.getString("phone"));
 					dto.setEmail(rs.getString("email"));
@@ -190,8 +190,8 @@ public class UserDao2{
 	 * 해당하는 사용자 정보만을 List에 저장하여 반환.
 	 */
 	public List<CustomerDTO> findUserList(int currentPage, int countPerPage) throws SQLException {
-		String sql = "SELECT customerId, name, phone,email, birth " 
-					+ "FROM USERINFO"
+		String sql = "SELECT customerId, name, phone,email, birth, nickname " 
+					+ "FROM Customer"
 					+ "ORDER BY userId";
 		jdbcUtil.setSqlAndParameters(sql, null,					// JDBCUtil에 query문 설정
 				ResultSet.TYPE_SCROLL_INSENSITIVE,				// cursor scroll 가능
@@ -227,8 +227,8 @@ public class UserDao2{
 	/**
 	 * 특정 모임에 속한 사용자들을 검색하여 List에 저장 및 반환
 	 */
-	public List<CustomerDTO> findUsersInCommunity(String meetingName) throws SQLException {
-        String sql = "SELECT customerId, name, email, phone FROM Customer u LEFT OUTER JOIN Meeting m ON c.customerId = m.cusId "
+	public List<CustomerDTO> findUsersInMeeting(String meetingName) throws SQLException {
+        String sql = "SELECT customerId, name, email, phone FROM Customer u LEFT OUTER JOIN Meeting m ON c.customerId = m.cusId " //customerId가 Customer의 Pk, cusId가 그걸 참조하는 Fk
      				+ "WHERE m.meetingName = ?";                         
 		jdbcUtil.setSqlAndParameters(sql, new Object[] {meetingName});	// JDBCUtil에 query문과 매개 변수 설정
 		
