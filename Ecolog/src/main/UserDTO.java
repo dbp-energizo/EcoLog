@@ -1,7 +1,7 @@
 package dto;
 
-public class CustomerDTO {
-	private String cusId;
+public class UserDTO {
+	private String userId;
 	private String password;
 	private String name;
 	private String phone;
@@ -9,11 +9,11 @@ public class CustomerDTO {
 	private String address;
 	private String birth;
 	private String nickname;
-	public String getCusId() {
-		return cusId;
+	public String getUserId() {
+		return userId;
 	}
-	public void setCusId(String cusId) {
-		this.cusId = cusId;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getPassword() {
 		return password;

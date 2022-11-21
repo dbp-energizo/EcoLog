@@ -4,8 +4,8 @@ import java.util.List;
 /**
  * 사용자 관리를 위해 필요한 도메인 클래스. USERINFO 테이블과 대응됨
  */
-public class Customer {
-	private String customerId;
+public class User {
+	private String userId;
 	private String password;
 	private String name;
 	private String phone;
@@ -19,11 +19,11 @@ public class Customer {
 	//private Character ch = new Character(id, nickname);
 	private List<String> imageList;
 	
-	public Customer(java.lang.String customerIdd, java.lang.String password, java.lang.String name, java.lang.String phone,
+	public User(java.lang.String userId, java.lang.String password, java.lang.String name, java.lang.String phone,
 			java.lang.String email, java.lang.String address, java.lang.String birth, java.lang.String nickname, int point,
 			List<Meeting> meeting, int regDate) {
 		super();
-		this.customerId = customerId;
+		this.userId = userId;
 		this.password = password;
 		this.name = name;
 		this.phone = phone;
@@ -36,10 +36,10 @@ public class Customer {
 		this.regDate = regDate;
 	}
 
-	public Customer(String customerId, String password, String name, String phone, String email, String address,
+	public User(String userId, String password, String name, String phone, String email, String address,
 			String birth, String nickname) {
 		super();
-		this.customerId = customerId;
+		this.userId = userId;
 		this.password = password;
 		this.name = name;
 		this.phone = phone;
@@ -66,12 +66,12 @@ public class Customer {
 		return this.password.equals(password);
 	}
 
-	public String getCustomerId() {
-		return customerId;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getPassword() {
@@ -171,12 +171,12 @@ public class Customer {
 	}
 
 	public boolean isSameUser(String userid) {
-        return this.customerId.equals(userid);
+        return this.userId.equals(userid);
     }
 
 	@java.lang.Override
 	public String toString() {
-		return "user [customerId=" + customerId + ", password=" + password + ", name=" + name + ", phone=" + phone + ", email=" + email
+		return "user [userId=" + userId + ", password=" + password + ", name=" + name + ", phone=" + phone + ", email=" + email
 				+ ", address=" + address + ", birth=" + birth + ", nickname=" + nickname + ", point=" + point
 				+ ", regDate=" + regDate + "]";
 	}
