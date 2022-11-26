@@ -1,7 +1,4 @@
-html, body{
-  background-color: #FFFFFF;
-  font-family: 'Roboto', sans-serif;
-}
+
 .main{
   width: 100%;
   display: block;
@@ -10,14 +7,12 @@ html, body{
 .content-wrap{
   width: 100%;
   margin:0 auto;
-  border: 4px solid rgba(161, 161, 161, 0.5); 
-  border-radius: 20px;
   overflow: hidden;
-  background: #ddaf35;
+  background: #ffffff;
 }
 .content-left{
-  background: #0b0809;
-  color:#ddaf35;
+  background: #ffffff;
+  color:#004300;
   float: left;
   width: 100%;
   padding: 5px;
@@ -64,7 +59,7 @@ html, body{
 .active{
   background: #0b0809;
   border-radius: 50%;
-  color: #ffffff;
+  color: #004300;
 }
 
 @media(min-width: 1000px){
@@ -80,14 +75,13 @@ html, body{
     width: 800px;
     height: 400px;
     margin:0 auto;
-    border: 4px solid rgba(161, 161, 161, 0.5); 
     border-radius: 20px;
     overflow: hidden;
-    background: #ddaf35;
+    background: #ffffff;
   }
   .content-left{
-    background: #0b0809;
-    color:#ddaf35;
+    background: #ffffff;
+    color:#004300;
     float: left;
     width: 360px;
     height: 400px;
