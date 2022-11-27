@@ -1,9 +1,12 @@
 package model.dao;
 
 import java.beans.Statement;
+
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +30,117 @@ public class postDAO {
 	private ResultSet result;
 	private JDBCUtil jdbcUtil = null;
 	
-	public postDAO() {			
-		jdbcUtil = new JDBCUtil();	// JDBCUtil 객체 생성
+	public postDAO() {	
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");	
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}	
 	}
+	
+	private static Connection getConnection() {
+		String url = "jdbc:oracle:thin:@dblab.dongduk.ac.kr:1521:orcl";		
+		String user = "dbpr0107";
+		String passwd = "0974";
+
+		// DBMS와의 연결 생성
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(url, user, passwd);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	 
+		return conn;
+	}
+	
+	
+	public String getDate() {
+	  	String SQL = "SELECT NOW()"; // 현재 시간 가져오기
+	  	try {
+	  		PreparedStatement pstmt = conn.prepareStatement(SQL);
+	  		result = pstmt.executeQuery();
+	  		if (result.next()) {
+	  			return result.getString(1);
+	  		}
+	  	} catch(Exception e) {
+	  		e.printStackTrace();
+	  	}
+	  	return "";
+	  }
+	
+	 public int getNext() { // 다음 글 가지고 오기.
+		  	String SQL = "SELECT postnum FROM POST ORDER BY postnum DESC";
+		  	try {
+		  		PreparedStatement pstmt = conn.prepareStatement(SQL);
+		  		result = pstmt.executeQuery();
+		  		if (result.next()) {
+		  			return result.getInt(1) + 1;
+		  		}
+		  		return 1; // 첫 번째 게시물인 경우
+		  	} catch(Exception e) {
+		  		e.printStackTrace();
+		  	}
+		  	return -1; // 데이터베이스 오류
+	 }
+	 
+	 public ArrayList<Post> getList(int pageNumber) {
+			String SQL = "SELECT * FROM post WHERE postnum < ? ORDER BY postnum DESC LIMIT 10";
+			ArrayList<Post> list = new ArrayList<Post>();
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, getNext() - (pageNumber -1) * 10);
+				result = pstmt.executeQuery();
+				while (result.next()) {
+					Post post = new Post();
+					post.setPostNum(result.getInt(1));
+					post.setTitle(result.getString(2));
+					post.setCategory(result.getString(3));
+					post.setContent(result.getString(4));
+					post.setWriter(result.getString(6));
+					post.setWriteDate(result.getString(7));
+					list.add(post);
+				}			
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			return list;
+		}
+
+		public boolean nextPage(int pageNumber) {
+			String SQL = "SELECT * FROM POST WHERE postnum < ? ";
+
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, getNext() - (pageNumber -1) * 10);
+				result = pstmt.executeQuery();
+				if (result.next()) {
+					return true;
+				}			
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+		
+	 
+	 public int write(String postTitle, String userID, String postContent, String category) {
+		  	String SQL = "INSERT INTO POST (postnum, title, category, content, writer, writedate) "
+		  			+ "VALUES (?, ?, ?, ?, ?, ?)";
+		  	try {
+		  		PreparedStatement pstmt = conn.prepareStatement(SQL);
+		  		pstmt.setInt(1, getNext());
+		  		pstmt.setString(2, postTitle);
+		  		pstmt.setString(3, category);
+		  		pstmt.setString(4, postContent);
+		  		pstmt.setString(5, userID);
+		  		pstmt.setString(6, getDate());
+
+		  		return pstmt.executeUpdate();
+		  	} catch(Exception e) {
+		  		e.printStackTrace();
+		  	}
+		  	return -1; // 데이터베이스 오류
+		  }
 	
 	public List<Post> postList(int currentPage, int countPerPage) {
 		String sql = "SELECT postnum, title, writer, category, writedate " 
@@ -40,18 +151,18 @@ public class postDAO {
 			ResultSet.CONCUR_READ_ONLY);
 		
 		try {
-			ResultSet rs = jdbcUtil.executeQuery();				// query 실행			
-			int start = ((currentPage-1) * countPerPage) + 1;	// 출력을 시작할 행 번호 계산
-			if ((start >= 0) && rs.absolute(start)) {			// 커서를 시작 행으로 이동
-				List<Post> postList = new ArrayList<Post>();	// User들의 리스트 생성
+			ResultSet rs = jdbcUtil.executeQuery();						
+			int start = ((currentPage-1) * countPerPage) + 1;	
+			if ((start >= 0) && rs.absolute(start)) {			
+				List<Post> postList = new ArrayList<Post>();	
 				do {
-					Post post = new Post(			// User 객체를 생성하여 현재 행의 정보를 저장
+					Post post = new Post(			
 						rs.getInt("postnum"),
 						rs.getString("title"),
 						rs.getString("writer"),
 						rs.getString("category"),
 						rs.getString("writedate"));
-					postList.add(post);							// 리스트에 User 객체 저장
+					postList.add(post);							
 				} while ((rs.next()) && (--countPerPage > 0));		
 				return postList;							
 			}
@@ -63,56 +174,5 @@ public class postDAO {
 		return null;
 	}
 		
-		
-
-		/*try {
-
-			
-			
-			// 리스트 정보 가져오기
-			String query = "select * from "
-					+ "(select ROWNUM as rnum, A.* from "
-					+ "(select * from board_chat order by bdgroup desc, bdorder)A ) "
-					+ "where rnum >= ? and rnum <= ?";
-			preStmt = conn.prepareStatement(query);
-			// 요청된 페이지에 따른 게시물 범위 지정
-			int startPage = (page - 1) * BoardList.pagePerList + 1; // 시작 게시물
-			int endPage = startPage + BoardList.pagePerList - 1; // 끝 게시물
-			preStmt.setInt(1, startPage);
-			preStmt.setInt(2, endPage);
-			result = preStmt.executeQuery();
-			
-			// 결과를 ArrayList에 추가
-			ArrayList<Post> list = new ArrayList<>(); // 리스트 정보 담아줄 객체
-			while (result.next()) {
-				Post dto = new Post();
-				dto.setPostNum(result.getInt("postnum"));
-				dto.setTitle(result.getString("title"));
-				dto.setCategory(result.getString("category"));
-				dto.setContent(result.getString("content"));
-				dto.setVisitCount(result.getInt("visitcnt"));
-				dto.setWriteDate(result.getString("date"));
-
-				list.add(dto);
-			}
-
-			// 일반 배열로 지정해서 전달 (제네릭 타입은 타입변환에서 warning 발생)
-			Post[] bdList = list.toArray(new Post[list.size()]);
-			request.setAttribute("bdList", bdList); // 리스트 전달
-
-			return Ctrl.TRUE;
-
-		} catch (Exception e) {
-			System.out.println("readList db working Fail");
-			e.printStackTrace();
-		} finally {
-			dbClose();
-		}
-
-		return Ctrl.EXCEPT;
-	}*/
-	
-	
-	
 
 }
