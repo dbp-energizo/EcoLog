@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="model.dao.mybatis.mapper.PostMapper">
+	<cache />
+	
+	<sql id="BaseColumns">
+		postnum AS postNo,
+		title as title,
+		writer AS userId,
+		content AS content,
+		writedate AS writeDate,
+		category AS category	
+	</sql>
+	
+	<select id="selectpostByCondition" parameterType="hashmap" resultType="Post">
+		SELECT <include refid="BaseColumns"/>
+		FROM POST
+		<where>
+			<if test="postNo != null">
+				postnum = #{postNo}
+			</if>
+			<if test="userId != null">
+				AND writer = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertPost" parameterType="Post">
+		INSERT INTO POST (postnum, title, writer, category, content, writedate)
+		VALUES (#{postNo}, #{title}, #{userId}, #{category}, 
+		#{content}, #{writeDate})
+	</insert>
+
+	<update id="updatePost" parameterType="Post">
+		UPDATE POST
+		SET content = #{content}
+		WHERE postnum = #{postNo}
+	</update>
+	
+	<delete id="deletePost" parameterType="long">
+		DELETE FROM POST
+		WHERE postnum = #{postNo}
+	</delete>
+	
+	<resultMap id="associationResultMap" type="Post">
+		<id column="postnum" jdbcType="NUMERIC" property="postNo" />
+		<result column="writer" jdbcType="VARCHAR2" property="userId" />
+		<result column="title" jdbcType="CHAR" property="title" />
+		<result column="category" jdbcType="CHAR" property="category" />
+		<result column="content" jdbcType="VARCHAR2" property="content" />
+		<result column="writedate" jdbcType="TIMESTAMP" property="writeDate" />
+		<association column="writer" property="user" javaType="User">
+			<id column="writer" property="userId" />
+			<result column="user_name" property="userName" />
+		</association>
+	</resultMap>
+	
+	<select id="selectCommentByPrimaryKeyAssociation" parameterType="long" 		
+		resultMap="associationResultMap"> 
+		SELECT c.comment_no, 
+				c.user_id, 
+				c.comment_content, 
+				c.reg_date, 
+				u.user_name, 
+				u.phone, 
+				u.address
+		FROM COMMENTS c, USERS u			
+		WHERE c.user_id = u.user_id  
+		  AND c.comment_no = #{commentNo} 
+	</select>
+	
+	<select id="selectCommentByPrimaryKeyAssociation2" parameterType="long" 		
+		resultType="Comment"> 
+		SELECT c.comment_no AS commentNo,
+			   c.user_id AS userId,
+			   c.comment_content AS commentContent,
+			   c.reg_date AS regDate,
+			   u.user_id AS "user.userId",	
+			   u.user_name AS "user.userName", 			   
+			   u.phone AS "user.phone",	
+			   u.address AS "user.address"	
+		FROM COMMENTS c, USERS u			
+		WHERE c.user_id = u.user_id  
+		  AND c.comment_no = #{commentNo} 
+	</select>
+	
+</mapper>
