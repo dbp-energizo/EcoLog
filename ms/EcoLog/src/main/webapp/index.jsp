@@ -76,8 +76,8 @@ function userCreate(targetUri) {
 <header>
 	<div class="head">
 	<a href="loginForm.jsp">로그인</a>
-	<a href="registerForm.jsp">회원가입</a>
-	<a href="myPage.jsp">마이페이지</a>
+	<a href="WEB-INF/user/registerForm.jsp">회원가입</a>
+	<a href="WEB-INF/user/myPage.jsp">마이페이지</a>
 	</div>
 	<p/><font size='7' color='004300' weight="bold">EcoLog</font>
 </header>
@@ -87,13 +87,13 @@ function userCreate(targetUri) {
 			<!-- 로그인 되어있을 때는 character.jsp가 뜨도록 구현해두기 -->
 		</div>
 		<div class="tright">
-		   <%@ include file="main.jsp" %>
+		   <%@ include file="/WEB-INF/main/main.jsp" %>
 		</div>
 	</div>
 	<p/><p/><p/>
 	<div class="bottom">
 		<div class="bleft">
-			<%@ include file="rank.jsp" %>
+			<%@ include file="/WEB-INF/main/rank.jsp" %>
 		</div>
 		<div class="bright">
 			게시판 jsp 연결
