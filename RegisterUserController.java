@@ -19,15 +19,15 @@ public class RegisterUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-       	if (request.getMethod().equals("GET")) {	
-    		// GET request: 회원정보 등록 form 요청	
-    		log.debug("RegisterForm Request");
-
-    		List<Community> commList = UserManager.getInstance().findCommunityList();	// 커뮤니티 리스트 검색
-			request.setAttribute("commList", commList);	
-		
-			return "/user/registerForm.jsp";   // 검색한 커뮤니티 리스트를 registerForm으로 전송     	
-	    }	
+//       	if (request.getMethod().equals("GET")) {	
+//    		// GET request: 회원정보 등록 form 요청	
+//    		log.debug("RegisterForm Request");
+//
+//    		List<Community> commList = UserManager.getInstance().findCommunityList();	// 커뮤니티 리스트 검색
+//			request.setAttribute("commList", commList);	
+//		
+//			return "/user/registerForm.jsp";   // 검색한 커뮤니티 리스트를 registerForm으로 전송     	
+//	    }	
 
     	// POST request (회원정보가 parameter로 전송됨)
        	User user = new User(
@@ -44,7 +44,7 @@ public class RegisterUserController implements Controller {
 		try {
 			UserManager manager = UserManager.getInstance();
 			manager.create(user);
-	        return "redirect:/main/main";	// 성공 시 메인화면으로 redirect
+	        return "redirect:/user/list";	// 성공 시 리스트로 redirect
 	        
 		} catch (ExistingUserException e) {	// 예외 발생 시 회원가입 form으로 forwarding
             request.setAttribute("registerFailed", true);

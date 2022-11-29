@@ -56,12 +56,13 @@ public class UpdateUserController implements Controller {
     		request.getParameter("name"),
     		request.getParameter("nickName"),
     		request.getParameter("birth"),
+    		request.getParameter("phoneNumber"),
     		request.getParameter("email"));
 
     	log.debug("Update User : {}", updateUser);
 
 		UserManager manager = UserManager.getInstance();
-		manager.update(updateUser);			
+		//manager.update(updateUser);			
         return "redirect:/user/list";			
     }
 }

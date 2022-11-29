@@ -146,9 +146,10 @@ function userList(targetUri) {
 					</table> <br>
 					<table style="width: 100%">
 						<tr>
-							<td align="left">
-							<input type="button" value="회원 가입" onClick="userCreate()"> &nbsp; 
-							<input type="button" value="로그인 화면" onClick="userList('<c:url value='/user/login' />')"></td>
+							<td align="left"><input type="button" value="회원 가입"
+								onClick="userCreate()"> &nbsp; <input type="button"
+								value="로그인 화면"
+								onClick="userList('<c:url value='/user/login' />')"></td>
 						</tr>
 					</table>
 				</td>

@@ -30,22 +30,22 @@ function userCreate(targetUri) {
 </script>
 <style>
 #wrap {
-	width: 530px;
+	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 }
 
 table {
-	border: 3px solid Green
+	border: 3px Black
 }
 
 td {
-	border: 1px solidGreen
+	border: 1px light Green
 }
 
 #title {
-	background-color: Green
+	background-color: White
 }
 </style>
 </head>
@@ -56,8 +56,7 @@ td {
 		<table style="width: 100%">
 			<tr>
 				<td width="20"></td>
-				<td><b>에코로그</b><br>
-				<br>
+				<td><b>에코로그</b><br> <br>
 					<table>
 						<tr>
 							<td class="title">&nbsp;&nbsp;에코로그 - 로그인&nbsp;&nbsp;</td>
@@ -70,13 +69,13 @@ td {
 					</c:if> <br>
 					<table style="background-color: YellowGreen">
 						<tr height="40">
-							<td width="1100" align="center" bgcolor="E6ECDE">사용자 ID</td>
+							<td width="1100" align="center" bgcolor="e6ffe6">사용자 ID</td>
 							<td width="1100" bgcolor="ffffff" style="padding-left: 10">
 								<input type="text" style="width: 240" name="userId">
 							</td>
 						</tr>
 						<tr height="40">
-							<td width="1100" align="center" bgcolor="E6ECDE">비밀번호</td>
+							<td width="1100" align="center" bgcolor="e6ffe6">비밀번호</td>
 							<td width="1100" bgcolor="ffffff" style="padding-left: 10">
 								<input type="password" style="width: 240" name="password">
 							</td>
@@ -90,9 +89,6 @@ td {
 								onClick="userCreate(
 								'<c:url value='/user/register'/>')">
 							</td>
-						</tr>
-						<tr height="40">
-							<td>(관리자 로그인: admin/admin)</td>
 						</tr>
 					</table></td>
 			</tr>

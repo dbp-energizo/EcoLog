@@ -1,5 +1,7 @@
 package model.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +19,20 @@ public class UserDAO {
 		jdbcUtil = new JDBCUtil();	// JDBCUtil 객체 생성
 	}
 
+	private static Connection getConnection() {
+		String url = "jdbc:oracle:thin:@dblab.dongduk.ac.kr:1521:orcl";		
+		String user = "dbpr0107";
+		String passwd = "0974";
+
+		// DBMS와의 연결 생성
+		Connection conn = null;
+		try {
+			conn = DriverManager.getConnection(url, user, passwd);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	 
+		return conn;
+	}
 	/**
 	 * 사용자 관리 테이블에 새로운 사용자 생성.
 	 */
